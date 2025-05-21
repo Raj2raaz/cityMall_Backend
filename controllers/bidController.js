@@ -10,14 +10,17 @@ export const placeBid = async (req, res) => {
     const { data, error } = await supabase
       .from('bids')
       .insert([{ meme_id, user_id, credits }])
-      .select(); 
+      .select();
 
     if (error) {
       console.error('[Supabase Bid Error]', error);
       return res.status(500).json({ error: error.message });
     }
 
-    req.io.emit('newBid', { meme_id, user_id, credits });
+    if (global._io) {
+      global._io.emit('newBid', { meme_id, user_id, credits });
+    }
+
     res.status(201).json(data[0]);
   } catch (err) {
     console.error('[Server Error]', err);
