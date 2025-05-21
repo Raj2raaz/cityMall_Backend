@@ -7,7 +7,16 @@ import aiRoutes from './routes/aiRoutes.js';
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://citymall-subham.netlify.app',
+];
+
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use('/memes', memeRoutes);
