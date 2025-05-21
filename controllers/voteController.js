@@ -14,6 +14,9 @@ export const voteMeme = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 
-  req.io.emit('voteUpdate', { meme_id: id, voteType: type });
+  if (global._io) {
+    global._io.emit('voteUpdate', { meme_id: id, voteType: type });
+  }
+
   res.status(200).json({ success: true });
 };
